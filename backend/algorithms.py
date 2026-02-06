@@ -1,7 +1,3 @@
-# backend/algorithms.py
-# Python implementations of sorting algorithms for server-side benchmarking.
-# Each function must return a tuple: (sorted_array, comparisons, swaps_or_moves).
-# NO CHANGES NEEDED from the Flask version.
 
 def bubble_sort(arr):
     n = len(arr)
