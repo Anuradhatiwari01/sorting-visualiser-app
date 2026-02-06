@@ -13,34 +13,27 @@ from pydantic import BaseModel
 from backend.algorithms import ALGORITHMS, ALGORITHM_METADATA
 from backend.utils import generate_array
 
-# --- App Initialization ---
 app = FastAPI(title="SortVision API")
 
-# --- CORS Configuration ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
+    allow_origins=["*"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
-# --- Static Files and Templates ---
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# --- In-memory Storage ---
-# For the last benchmark result for CSV export
 last_benchmark_result = None
 
-# --- Pydantic Models for Request Validation ---
 class BenchmarkRequest(BaseModel):
     algorithms: List[str]
     sizes: List[int]
     dataType: str
     trials: int
-
-# --- API Endpoints ---
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -83,7 +76,7 @@ async def run_benchmark(payload: BenchmarkRequest):
                 "swaps": total_swaps / payload.trials
             })
             
-    # Prepare and store data for CSV export
+
     records = [
         {"Algorithm": name, "Size": p["size"], "DataType": payload.dataType,
          "AvgTime_ms": p["time"], "AvgComparisons": p["comparisons"], "AvgSwaps_Moves": p["swaps"]}
